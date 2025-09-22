@@ -1,0 +1,258 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- link to style sheet -->
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<!-- script to check for dark or light mode -->
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+<!-- start of index page content, this requires authentication in order to load -->
+<body onload="requireAuth(); init()">
+  <header class="nav">
+    <div class="container nav__row">
+      <div class="brand" onclick="location.href='index.html'" style="cursor:pointer">
+        <img src="assets/identicore.jpg" alt="identicore" style="width:130px; height:50px; border-radius: 10px;" />
+      </div>
+      <nav class="nav__links">
+        <a href="index.html">Dashboard</a>
+        <a href="create-alias.html">Create Alias</a>
+        <a href="view-aliases.html">All Aliases</a>
+        <a href="settings.html">Settings</a>
+        <a href="view-profile.html">View Profile</a>
+        <button class="btn logoutbtn" onclick="logout()">Logout</button>
+      </nav>
+    </div>
+  </header>
+<!-- Dashboard content -->
+  <main class="main">
+    <div class="container">
+      <section class="panel">
+        <h1 class="h1">Dashboard</h1>
+        <!-- reminder notification to encourage users to create and review existing alias records -->
+        <div id="reminderBanner" class="banner">
+            <div><strong>Quick nudge:</strong> Keep your identities up to date. Add or review an alias.</div>
+            <div class="actions">
+                <a class="btn btn--primary" href="create-alias.html">Create Alias</a>
+                <a class="btn" href="view-aliases.html">Review Aliases</a>
+                <a class="btn btn--ghost" href="settings.html">Reminder Settings</a>
+                <button class="btn btn--ghost" onclick="dismissBanner()">Dismiss</button>
+            </div>
+        </div>
+        <!-- Overview of all the aliases created by the user so far -->
+        <p class="p">Manage your professional, casual, and anonymous identities from a single dashboard.</p>
+        <div class="spacer"></div>
+        <div class="grid">
+          <div class="card">
+            <div class="kicker">Overview</div>
+            <div class="row" style="gap:18px; flex-wrap:wrap">
+              <div class="panel" style="min-width:140px">
+                <div class="kicker">Total</div>
+                <div class="dashboardText"style="font-size:26px" data-count="total">0</div>
+              </div>
+              <div class="panel" style="min-width:140px">
+                <div class="kicker">Professional</div>
+                <div class="dashboardText"style="font-size:26px" data-count="professional">0</div>
+              </div>
+              <div class="panel" style="min-width:140px">
+                <div class="kicker">Casual</div>
+                <div class="dashboardText" style="font-size:26px" data-count="casual">0</div>
+              </div>
+              <div class="panel" style="min-width:140px">
+                <div class="kicker">Anonymous</div>
+                <div class="dashboardText"style="font-size:26px" data-count="anonymous">0</div>
+              </div>
+              <div class="panel" style="min-width:140px">
+                <div class="kicker">Public</div>
+                <div class="dashboardText"style="font-size:26px" data-count="public">0</div>
+              </div>
+              <div class="panel" style="min-width:140px">
+                <div class="kicker">Private</div>
+                <div class="dashboardText"style="font-size:26px" data-count="private">0</div>
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="row" style="gap:10px">
+              <a class="btn btn--primary" href="create-alias.html">Create Alias</a>
+              <a class="btn" href="view-aliases.html">View All</a>
+            </div>
+          </div>
+          <!-- short descriptions of what the website provides for users -->
+          <div class="card">
+            <div class="kicker">Reminder</div>
+            <p class="reminderText">Use this dashboard to get a quick glance of your aliases</p>
+            <p class="reminderText">Browse the home page for what IdentiCore will provide users</p>
+            <p class="reminderText">Using a simple navigation bar</p>
+            <p class="reminderText">We keep your data secure, and help manage your accounts</p>
+          </div>
+          
+        </div>
+        </div>
+        <!-- vision of identicore details -->
+        <section class="dashboard-content">
+          <h2>Vision of IdentiCore</h2>
+          <p class="vision-content">Take control of your digital presence with ease. Here, you can securely manage all your online identities in one place. Whether professional, casual, or anonymous. Create and organize aliases across different platforms. Protect your privacy with encryption and visibility controls. Keep your personal, professional, and private worlds separate. Track your identity layers with a clear, simple dashboard. Your identity, your rules.</p>
+          <div>
+            <div class="content-box with-bg">
+            <h2 class="helpfultips">Helpful Tips</h2>
+            <div class="content-wrappertips ">
+              <div class="text-contenttips">
+                <ul class="tips-list">
+                  <li class="helpfullist"><img src="/assets/tag.jpg" alt="Icon" class="tip-icon">Use Professional for LinkedIn, GitHub, or any career-related platforms.</li>
+                  <li class="helpfullist"><img src="/assets/casual.jpg" alt="Icon" class="tip-icon">Use Casual for personal blogs or public social accounts.</li>
+                  <li class="helpfullist"><img src="/assets/privacy.jpg" alt="Icon" class="tip-icon">Use Anonymous for forums or whistleblowing platforms.</li>
+                  <li class="helpfullist"><img src="/assets/visibility.jpg" alt="Icon" class="tip-icon">Keep bios consistent with your personal brand across platforms.</li>
+                  <li class="helpfullist"><img src="/assets/review.jpg" alt="Icon" class="tip-icon">Review and update aliases regularly to avoid outdated info.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          </div>
+        </section>
+        <!-- core functionalities details -->
+        <section class="dashboard-content">
+          <h2 class="h2">Core Functionalities</h2>
+          <div class="content-wrapper">
+            <div class="text-content">
+              <img src="/assets/core.jpg" alt="Core Features Graphic" style="width:100%; max-width:500px;">
+            </div>
+            <ul>
+              <li><img src="/assets/organise.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Manage multiple identities per platform</li>
+              <li><img src="/assets/tag.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Tag aliases by context professional, casual, anonymous</li>
+              <li><img src="/assets/visibility.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Toggle visibility between public and private</li>
+              <li><img src="/assets/reminder.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Reminders to update or review identities</li>
+              <li><img src="/assets/secure.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Secure authentication & data encryption</li>
+            </ul>
+          </div>
+        </section>
+        <!-- impact for user details -->
+        <section class="dashboard-content">
+          <h2 class="h2">Impact for Users</h2>
+          <div class="content-wrapper">
+            <div class="text-content">
+              <p class="impactDesc">IdentiCore empowers users to take charge of their digital footprint:</p>
+              <ul>
+                <li><img src="/assets/consolidate.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Consolidate all online personas in one secure place</li>
+                <li><img src="/assets/overlap.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Prevent identity overlap and context collapse</li>
+                <li><img src="/assets/privacy.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Maintain privacy and present across platforms</li>
+                <li><img src="/assets/time.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Save time with centralized alias management</li>
+              </ul>
+              </div>
+              <img src="/assets/impact.jpg" alt="User Impact Graphic" style="width:100%; max-width:500px;">
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <!-- footer section has footer elements as well as developer social icons -->
+<footer class="footer">
+  <div class="container row" style="justify-content:space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="row" style="gap: 14px;">
+      <a href="https://www.linkedin.com/in/bryan-loo-2a7973200/" target="_blank" aria-label="linkedin">
+        <img src="assets/linkedin.jpg" alt="linkedin" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+      <a href="https://github.com/BryanLoooo" target="_blank" aria-label="github">
+        <img src="assets/github.jpg" alt="github" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+    </div>
+  </div>
+</footer>
+
+  <!-- reminder for the user to create a new alias or review an existing one -->
+  <div id="reminderModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="remTitle" aria-describedby="remDesc">
+    <div class="modal">
+      <div class="modal__header">
+        <div id="remTitle" class="modal__title">Keep your identities fresh</div>
+        <button class="modal__close" onclick="dismissReminder()" aria-label="Close">X</button>
+      </div>
+      <div id="remDesc" class="modal__body">
+        It is a good time to <b>add</b> a new alias or <b>review</b> existing ones.  
+        You control reminders in <a href="settings.html">Settings</a>.
+      </div>
+      <div class="modal__actions">
+        <a class="btn btn--primary" href="create-alias.html">Create Alias</a>
+        <a class="btn" href="view-aliases.html">Review Aliases</a>
+        <button class="btn btn--ghost" onclick="snoozeReminder('daily')">Snooze 24h</button>
+        <button class="btn btn--ghost" onclick="dismissReminder()">Dismiss</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <script>
+    let me=null, aliases=[];
+
+    async function init(){
+      me = await apiFetch('/api/user/me',{method:'GET'});
+      aliases = await loadAliases() || [];
+      renderCounts(aliases);
+      maybeShowReminderModal(me, aliases);
+    }
+
+    function freqToMs(freq){
+      if (freq==='daily') return 24*60*60*1000;
+      if (freq==='weekly') return 7*24*60*60*1000;
+      if (freq==='monthly') return 30*24*60*60*1000;
+      return Infinity;
+    }
+
+    async function maybeShowReminderModal(me, aliases){
+      const modal = document.getElementById('reminderModal');
+      if (!modal || !me) return;
+
+      // Opt-out & 'none' means never show
+      if (!me.reminder?.enabled || me.reminder?.frequency === 'none') return;
+
+      const now = Date.now();
+      const lastPrompt = me.reminder?.lastPromptAt ? new Date(me.reminder.lastPromptAt).getTime() : 0;
+      const lastAlias  = me.lastAliasCreatedAt ? new Date(me.lastAliasCreatedAt).getTime() : 0;
+
+      const dueByFreq   = (now - lastPrompt) >= freqToMs(me.reminder.frequency);
+      const noAliases   = (aliases.length === 0);
+      const staleAliases= (lastAlias === 0) || ((now - lastAlias) >= 30*24*60*60*1000);
+
+      if (noAliases || dueByFreq || staleAliases){
+        showReminderModal();
+        alert("Quick reminder: Keep your identities up to date. Add or review an alias!");
+        // record we prompted now
+        await apiFetch('/api/user/reminder/prompted', { method:'PUT' });
+      }
+    }
+
+    function showReminderModal(){
+      document.getElementById('reminderModal')?.classList.add('show');
+    }
+    function hideReminderModal(){
+      document.getElementById('reminderModal')?.classList.remove('show');
+    }
+
+    async function dismissReminder(){
+      hideReminderModal();
+      // Mark prompt time so we don't immediately show again
+      await apiFetch('/api/user/reminder/prompted', { method:'PUT' });
+      toast('Reminder dismissed');
+    }
+
+    async function snoozeReminder(kind){
+      hideReminderModal();
+      // For simplicity we just set lastPromptAt=now; frequency logic handles the wait.
+      await apiFetch('/api/user/reminder/prompted', { method:'PUT' });
+      toast(kind==='daily' ? 'Snoozed for 24h' : 'Snoozed');
+    }
+  </script>
+</body>
+</html>

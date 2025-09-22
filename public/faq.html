@@ -1,0 +1,97 @@
+<!-- FAQ.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Frequently Asked Questions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- link to style sheet -->
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<!-- script to check if the theme is dark or light mode -->
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+<body>
+  <!-- custom navigation for users to access quick information and restrict access to the rest of the website -->
+  <header class="nav">
+    <div class="container nav__row">
+      <div class="brand" onclick="location.href='index.html'" style="cursor:pointer">
+        <img src="assets/identicore.jpg" alt="identicore" style="width:130px; height:50px; border-radius: 10px;" />
+      </div>
+    </div>
+  </header>
+<!-- start of FAQs section -->
+ <main class="main container">
+  <h1 class="footerTitle">Frequently Asked Questions</h1><br />
+  <h3 class="faqHeaders">What is IdentiCore?</h3>
+  <p class="p">
+    IdentiCore is a modern web platform that allows users to securely manage multiple online identities and aliases in one place. Whether you're a freelancer juggling personal and professional accounts, a privacy-conscious user, or someone who maintains different personas across platforms (e.g., GitHub, LinkedIn, Reddit), IdentiCore helps organize, tag, and control them efficiently.
+  </p>
+  <p class="p">
+    It serves as a central dashboard for visibility control, tag-based grouping, and alias metadata. The platform supports features like reminders, profile editing, context tagging (e.g., “anonymous”, “work”, “fun”), and alias visibility toggles for managing exposure.
+  </p><br />
+  <h3 class="faqHeaders">Is my data secure?</h3>
+  <p class="p">
+    Yes, IdentiCore is built with a strong focus on data privacy and security. Sensitive information is encrypted in transit using HTTPS and would be stored securely using encryption-at-rest best practices in a production environment. For authentication, passwords are hashed using bcrypt, ensuring that even if database access is compromised, raw passwords are never exposed.
+  </p>
+  <p class="p">
+    While the demo version may not include all production-grade security layers, the architecture is designed to integrate secure authentication tokens (like JWT), protect against CSRF/XSS vulnerabilities, and store no plain-text credentials. Future releases aim to include Two-Factor Authentication (2FA), role-based access controls, and enhanced audit trails.
+  </p><br />
+  <h3 class="faqHeaders">Can I update or delete my account?</h3>
+  <p class="p">
+    Absolutely. IdentiCore gives you full control over your user data. You can:
+    <ul class="p">
+      <li>Edit your profile details such as username, age, email, and address from the <strong>Settings</strong> page.</li>
+      <li>Adjust your reminder preferences for managing aliases.</li>
+      <li>Permanently delete your account and all associated data using the <strong>“Danger Zone”</strong> option.</li>
+    </ul>
+    <p class="faqDescription">Please note that deletion is irreversible. Once you delete your account, all stored aliases, tags, and reminders will be permanently erased from the database.</p>
+  </p><br />
+  <h3 class="faqHeaders">What if I forget my login credentials?</h3>
+  <p class="p">
+    In the current version of IdentiCore, basic email-password authentication is used. If you forget your credentials, there's no automated recovery system yet. You would need to contact the administrator or re-register.
+  </p>
+  <p class="p">
+    However, a future update will introduce full password reset functionality via email with secure token validation. We also plan to support OAuth login options (e.g., Google Sign-In, GitHub) to make credential management easier.
+  </p><br />
+  <h3 class="faqHeaders">What types of aliases can I create?</h3>
+  <p class="p">
+    You can create aliases for any online identity you manage — personal accounts, work profiles, anonymous personas, or project-specific handles. Each alias can be tagged with platforms (like Reddit, GitHub, TikTok) and contexts (e.g., casual, professional) and marked as <em>public</em> or <em>private</em> depending on visibility.
+  </p>
+  <p class="p">
+    These aliases are displayed in your dashboard, grouped and filterable by tags, making it easy to manage many identities without confusion.
+  </p><br />
+  <h3 class="faqHeaders">Will IdentiCore remain free?</h3>
+  <p class="p">
+    The current version of IdentiCore is free to use and intended for personal or educational purposes. In the future, a tiered system may be introduced:
+    <ul class="p">
+      <li><strong>Free Tier</strong>: Basic alias management, profile controls, and reminders.</li>
+      <li><strong>Pro Tier</strong>: Advanced analytics, additional storage, data export, and integrations.</li>
+    </ul>
+    <p class="faqDescription">Any changes in pricing will be communicated clearly ahead of time. Your feedback will help shape future plans.</p>
+  </p>
+</main>
+<!-- footer section has footer elements as well as developer social icons -->
+<footer class="footer">
+  <div class="container row" style="justify-content:space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="row" style="gap: 14px;">
+      <a href="https://www.linkedin.com/in/bryan-loo-2a7973200/" target="_blank" aria-label="linkedin">
+        <img src="assets/linkedin.jpg" alt="linkedin" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+      <a href="https://github.com/BryanLoooo" target="_blank" aria-label="github">
+        <img src="assets/github.jpg" alt="github" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

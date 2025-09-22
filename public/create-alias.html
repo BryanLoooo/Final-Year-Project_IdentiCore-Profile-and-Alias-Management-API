@@ -1,0 +1,115 @@
+<!-- create-alias.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Create Alias</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- link to style sheet -->
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<!-- script to check for dark or light theme based on the theme mode set in the settings page -->
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+<!-- verifies the user before allowing access for alias creation -->
+<body onload="requireAuth()">
+  <header class="nav">
+    <div class="container nav__row">
+      <div class="brand" onclick="location.href='index.html'" style="cursor:pointer">
+        <img src="assets/identicore.jpg" alt="identicore" style="width:130px; height:50px; border-radius: 10px;" />
+      </div>
+      <nav class="nav__links">
+        <a href="index.html">Dashboard</a>
+        <a href="view-aliases.html">All Aliases</a>
+        <button class="btn logoutbtn" onclick="logout()">Logout</button>
+      </nav>
+    </div>
+  </header>
+<!-- start of create alias form -->
+  <main class="main">
+    <div class="container" style="max-width:720px">
+      <div class="full-page-center">
+      <section class="panel">
+        <h1 class="h1">Create Alias</h1>
+        <div class="form">
+          <input id="platform" class="input" placeholder="Platform (e.g., LinkedIn, GitHub, Instagram)" />
+          <input id="username" class="input" placeholder="Username or handle" />
+          <textarea id="bio" class="input" rows="3" placeholder="Bio (optional)"></textarea>
+          <div class="row" style="gap:12px">
+            <div style="flex:1">
+              <label class="kicker">Context</label>
+              <select id="context" class="input">
+                <option value="professional">Professional</option>
+                <option value="casual">Casual</option>
+                <option value="anonymous">Anonymous</option>
+              </select>
+            </div>
+            <div style="flex:1">
+              <label class="kicker">Visibility</label>
+              <select id="visibility" class="input">
+                <option value="public">Public</option>
+                <option value="private" selected>Private</option>
+              </select>
+            </div>
+          </div>
+          <input id="email" class="input" type="email" placeholder="Email to encrypt (optional)" />
+          <div class="row" style="gap:10px">
+            <button class="btn btn--primary" onclick="createAlias()">Create</button>
+             <a class="btn" href="view-aliases.html">Cancel</a>
+          </div>
+        </div>
+      </section>
+      </div>
+    </div>
+  </main>
+<!-- footer section has footer elements as well as developer social icons -->
+<footer class="footer">
+  <div class="container row" style="justify-content:space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="row" style="gap: 14px;">
+      <a href="https://www.linkedin.com/in/bryan-loo-2a7973200/" target="_blank" aria-label="linkedin">
+        <img src="assets/linkedin.jpg" alt="linkedin" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+      <a href="https://github.com/BryanLoooo" target="_blank" aria-label="github">
+        <img src="assets/github.jpg" alt="github" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+    </div>
+  </div>
+</footer>
+<!-- create a notification after the alias has been successfully created -->
+  <div class="toast" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <!-- returns an error if the alias has failed to be created -->
+  <script>
+    async function createAlias(){
+      const body = {
+        platform: platform.value.trim(),
+        username: username.value.trim(),
+        bio: bio.value.trim(),
+        context: context.value,
+        visibility: visibility.value,
+        encryptedEmail: email.value.trim()
+      };
+      if(!body.platform || !body.username) return toast('Platform & username are required');
+      const res = await apiFetch('/api/aliases',{ method:'POST', body: JSON.stringify(body) });
+      
+      if(res?._id){
+        toast('Alias created');
+        setTimeout(()=> location.href='view-aliases.html', 350);
+
+      } else {
+        toast(res?.error || 'Failed to create alias');
+        
+      }
+    }
+  </script>
+</body>
+</html>

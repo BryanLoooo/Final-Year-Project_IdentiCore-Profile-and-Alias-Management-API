@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>IdentiCore • Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+<body>
+  <header class="nav">
+    <div class="container nav__row">
+      <img src="assets/identicore.jpg" alt="identicore" style="width:130px; height:50px; border-radius: 10px;" />
+      <nav class="nav__links">
+        <a href="login.html">Log in</a>
+        <a href="register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container" style="max-width:540px">
+      <section class="panel">
+        <h1 class="h1">Login</h1>
+        <div class="spacer"></div>
+        <div class="form">
+          <input id="login-email" class="input" type="email" placeholder="Email" />
+          <input id="login-pass" class="input" type="password" placeholder="Password" />
+          <button class="btn btn--primary" onclick="login()">Login</button>
+          <div class="p">No account? <a href="register.html">Register here</a></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+<!-- footer section has footer elements as well as developer social icons -->
+<footer class="footer">
+  <div class="container row" style="justify-content:space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="row" style="gap: 14px;">
+      <a href="https://www.linkedin.com/in/bryan-loo-2a7973200/" target="_blank" aria-label="linkedin">
+        <img src="assets/linkedin.jpg" alt="linkedin" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+      <a href="https://github.com/BryanLoooo" target="_blank" aria-label="github">
+        <img src="assets/github.jpg" alt="github" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+    </div>
+  </div>
+</footer>
+  <div class="toast" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <script>
+    async function login(){
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-pass').value;
+      if(!email || !password){ return toast('Enter email & password'); }
+      const res = await apiFetch('/api/auth/login',{
+        method:'POST', body: JSON.stringify({email,password})
+      });
+      if(res?.token){
+        setToken(res.token);
+        toast('Login successful');
+        setTimeout(()=> location.href='index.html', 350);
+      }else{
+        toast(res?.message || 'Login failed');
+      }
+    }
+  </script>
+</body>
+</html>

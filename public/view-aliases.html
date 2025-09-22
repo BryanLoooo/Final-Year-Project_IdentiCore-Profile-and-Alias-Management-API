@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>IdentiCore • All Aliases</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+<body onload="requireAuth(); init()">
+  <header class="nav">
+    <div class="container nav__row">
+      <div class="brand" onclick="location.href='index.html'" style="cursor:pointer">
+        <img src="assets/identicore.jpg" alt="identicore" style="width:130px; height:50px; border-radius: 10px;" />
+      </div>
+      <nav class="nav__links">
+        <a href="index.html">Dashboard</a>
+        <a href="create-alias.html">Create Alias</a>
+        <button class="btn logoutbtn" onclick="logout()">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <div class="full-page-center">
+      <section class="panel">
+        <div class="toolbar">
+          <h1 class="h1" style="margin:0">Your Aliases</h1>
+          <div class="row" style="gap:10px">
+            <select id="filterContext" class="input" style="min-width:180px">
+              <option value="all">All Contexts</option>
+              <option value="professional">Professional</option>
+              <option value="casual">Casual</option>
+              <option value="anonymous">Anonymous</option>
+            </select>
+            <select id="filterVisibility" class="input" style="min-width:160px">
+              <option value="all">Any Visibility</option>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+            <a class="btn btn--primary" href="create-alias.html">Create</a>
+          </div>
+        </div>
+
+        <div id="cards" class="grid"></div>
+
+        <div class="spacer"></div>
+        <table class="table">
+          <thead><tr><th>Metric</th><th>Count</th></tr></thead>
+          <tbody>
+            <tr><td>Total</td><td data-count="total">0</td></tr>
+            <tr><td>Professional</td><td data-count="professional">0</td></tr>
+            <tr><td>Casual</td><td data-count="casual">0</td></tr>
+            <tr><td>Anonymous</td><td data-count="anonymous">0</td></tr>
+            <tr><td>Public</td><td data-count="public">0</td></tr>
+            <tr><td>Private</td><td data-count="private">0</td></tr>
+          </tbody>
+        </table>
+      </section>
+      </div>
+    </div>
+  </main>
+
+<!-- footer section has footer elements as well as developer social icons -->
+<footer class="footer">
+  <div class="container row" style="justify-content:space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="row" style="gap: 14px;">
+      <a href="https://www.linkedin.com/in/bryan-loo-2a7973200/" target="_blank" aria-label="linkedin">
+        <img src="assets/linkedin.jpg" alt="linkedin" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+      <a href="https://github.com/BryanLoooo" target="_blank" aria-label="github">
+        <img src="assets/github.jpg" alt="github" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+    </div>
+  </div>
+</footer>
+  <div class="toast" aria-live="polite"></div>
+  <script src="app.js"></script>
+  <script>
+    let _aliases = [];
+
+    async function init(){
+      _aliases = await loadAliases() || [];
+      renderAll();
+      filterContext.onchange = renderAll;
+      filterVisibility.onchange = renderAll;
+    }
+
+    function filtered(){
+      const c = filterContext.value, v = filterVisibility.value;
+      return _aliases.filter(a => (c==='all'||a.context===c) && (v==='all'||a.visibility===v));
+    }
+
+    function renderAll(){
+      const list = filtered();
+      renderCounts(list.length ? list : _aliases); // overview based on all; change to 'list' if you prefer filtered counts
+      const el = document.getElementById('cards');
+      el.innerHTML = '';
+      if(!list.length){
+        el.innerHTML = `<div class="panel center">No aliases found. <a href="create-alias.html">Create one</a>.</div>`;
+        return;
+      }
+      for(const a of list){
+        const node = document.createElement('div');
+        node.className = 'card';
+        node.innerHTML = `
+          <div class="card__top">
+            <div class="kicker">${a.platform}</div>
+            ${badgeForVisibility(a.visibility)}
+          </div>
+          <div style="font-weight:700; font-size:1.1rem">${a.username}</div>
+          <div class="p">${a.bio ? a.bio : '<i>No bio</i>'}</div>
+          <div class="row" style="justify-content:space-between">
+            <span class="badge">${a.context}</span>
+            <span class="kicker">${new Date(a.createdAt).toLocaleDateString()}</span>
+          </div>
+          <div class="row" style="gap:8px; margin-top:6px">
+            <button class="btn" onclick='editAlias("${a._id}")'>Edit</button>
+            <button class="btn btn--danger" onclick='deleteAlias("${a._id}")'>Delete</button>
+          </div>
+        `;
+        el.appendChild(node);
+      }
+      // update overview (global)
+      renderCounts(_aliases);
+    }
+
+    async function deleteAlias(id){
+      if(!confirm('Delete this alias?')) return;
+      await apiFetch('/api/aliases/'+id,{ method:'DELETE' });
+      toast('Alias deleted');
+      _aliases = _aliases.filter(x => x._id !== id);
+      renderAll();
+    }
+
+    function editAlias(id){
+      const a = _aliases.find(x=>x._id===id);
+      if(!a) return;
+      const bio = prompt('Update bio:', a.bio || '');
+      if(bio===null) return;
+      const visibility = prompt('Visibility (public/private):', a.visibility);
+      if(!visibility) return;
+      apiFetch('/api/aliases/'+id, {
+        method:'PUT',
+        body: JSON.stringify({ bio, visibility })
+      }).then(updated=>{
+        toast('Alias updated');
+        const idx = _aliases.findIndex(x=>x._id===id);
+        if(idx>-1) _aliases[idx] = updated;
+        renderAll();
+      });
+    }
+  </script>
+</body>
+</html>

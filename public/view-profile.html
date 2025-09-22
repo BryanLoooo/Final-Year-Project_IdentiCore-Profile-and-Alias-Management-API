@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>IdentiCore • View Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+<body onload="requireAuth(); loadProfile()">
+<header class="nav">
+    <div class="container nav__row">
+      <div class="brand" onclick="location.href='index.html'" style="cursor:pointer">
+        <img src="assets/identicore.jpg" alt="identicore" style="width:130px; height:50px; border-radius: 10px;" />
+      </div>
+      <nav class="nav__links">
+        <a href="index.html">Dashboard</a>
+        <a href="create-alias.html">Create Alias</a>
+        <a href="view-aliases.html">All Aliases</a>
+        <a href="settings.html">Settings</a>
+        <a href="view-profile.html">View Profile</a>
+
+        <button class="btn logoutbtn" onclick="logout()">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container" style="max-width:720px">
+      <section class="panel">
+        <h1 class="h1">Your Profile</h1>
+        <div class="form">
+          <label>Username</label>
+          <input id="vp-username" class="input" type="text" disabled />
+
+          <label>Email</label>
+          <input id="vp-email" class="input" type="email" disabled />
+
+          <label>Age</label>
+          <input id="vp-age" class="input" type="number" disabled />
+        </div>
+      </section>
+    </div>
+  </main>
+<!-- footer section has footer elements as well as developer social icons -->
+<footer class="footer">
+  <div class="container row" style="justify-content:space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="row" style="gap: 14px;">
+      <a href="https://www.linkedin.com/in/bryan-loo-2a7973200/" target="_blank" aria-label="linkedin">
+        <img src="assets/linkedin.jpg" alt="linkedin" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+      <a href="https://github.com/BryanLoooo" target="_blank" aria-label="github">
+        <img src="assets/github.jpg" alt="github" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+    </div>
+  </div>
+</footer>
+  <div class="toast" aria-live="polite"></div>
+  <script src="app.js"></script>
+
+  <script>
+    async function loadProfile() {
+      const me = await apiFetch('/api/user/me', { method: 'GET' });
+      if (!me) return toast('Failed to load profile.');
+
+      document.getElementById('vp-username').value = me.username || '';
+      document.getElementById('vp-email').value = me.email || '';
+      document.getElementById('vp-age').value = me.age || '';
+      document.getElementById('vp-address1').value = me.addressLine1 || '';
+      document.getElementById('vp-address2').value = me.addressLine2 || '';
+      document.getElementById('vp-id').value = me._id || '';
+    }
+  </script>
+</body>
+</html>

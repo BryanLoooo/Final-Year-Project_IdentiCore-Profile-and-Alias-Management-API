@@ -1,0 +1,80 @@
+<!-- about.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About Us</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- links to style sheet -->
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+
+<!-- used to toggle between dark and light mode -->
+<script>
+  (function() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+<body>
+  <!-- this is a custom navigation bar which is different from the dashboard as it provides vision and FAQs information without the need to authenticate and login -->
+  <header class="nav">
+    <div class="container nav__row">
+      <div class="brand" onclick="location.href='index.html'" style="cursor:pointer">
+        <img src="assets/identicore.jpg" alt="identicore" style="width:130px; height:50px; border-radius: 10px;" />
+      </div>
+    </div>
+  </header>
+  <!-- start of about us page content -->
+  <main class="main container">
+    <h1 class="footerTitle">About Us</h1>
+    <h2>What is IdentiCore?</h2>
+    <p class="p">
+      IdentiCore is a simple and secure platform that helps you manage your online aliases and digital identities in one place.
+    </p>
+    <p class="p">
+      Built with privacy and user control in mind, IdentiCore was created to empower individuals to take control of their digital presence.
+    </p>
+    <p class="p">
+      Our mission is to simplify identity management across platforms, whether it's for professional use, casual accounts, or anonymous interactions.
+    </p>
+    <h2>Core features</h2>
+    <img src="assets/corefeatures.jpg" alt="Facebook" style="width:1000px; height:400px;" />
+    <section class="dashboard-content">
+            <h2 class="h2">Impact for Users</h2>
+            <div class="content-wrapper">
+              <div class="text-content">
+                <p class="aboutDescription">IdentiCore empowers users to take charge of their digital footprint:</p>
+                <ul>
+                  <li><img src="/assets/consolidate.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Consolidate all online personas in one secure place</li>
+                  <li><img src="/assets/overlap.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Prevent identity overlap and context collapse</li>
+                  <li><img src="/assets/privacy.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Maintain privacy and present across platforms</li>
+                  <li><img src="/assets/time.jpg" alt="User Impact Graphic" style="width:100%; max-width:50px; margin-right: 10px;">Save time with centralized alias management</li>
+                </ul>
+                </div>
+                <img src="/assets/impact.jpg" alt="User Impact Graphic" style="width:100%; max-width:500px;">
+            </div>
+          </section>
+  </main>
+
+  <!-- footer section has footer elements as well as developer social icons -->
+<footer class="footer">
+  <div class="container row" style="justify-content:space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <a href="about.html">About Us</a>
+      <a href="faq.html">FAQ</a>
+      <a href="terms.html">Terms & Conditions</a>
+    </div>
+    <div class="row" style="gap: 14px;">
+      <a href="https://www.linkedin.com/in/bryan-loo-2a7973200/" target="_blank" aria-label="linkedin">
+        <img src="assets/linkedin.jpg" alt="linkedin" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+      <a href="https://github.com/BryanLoooo" target="_blank" aria-label="github">
+        <img src="assets/github.jpg" alt="github" style="width:24px; height:24px; border-radius: 10px;" />
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
