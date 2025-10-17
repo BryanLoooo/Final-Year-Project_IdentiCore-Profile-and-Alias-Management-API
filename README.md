@@ -13,6 +13,8 @@ Reminder system with opt-in banners and dashboard stats
 Responsive user interface with dark or light theme toggle
 
 ```
+## Video Demonstration
+https://youtu.be/ivy_cK7e0Yg
 
 ## API Testing
 All backend API endpoints were tested using Postman
